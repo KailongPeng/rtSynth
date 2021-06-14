@@ -38,8 +38,9 @@ for subj in tqdm(range(1,51)):
         while back2backRep_morph: # or back2backRep_cat: # only accept the order when both are false
             _order=np.asarray(random.sample(list(np.arange(NumTrial)),NumTrial))
             for i in range(NumImg):
-                _order[np.logical_and(_order>=np.arange(0,NumTrial+1,NumRep)[i],
-                                      _order<np.arange(0,NumTrial+1,NumRep)[i+1])]=i
+                delimiter=np.arange(0,NumTrial+1,NumRep)
+                _order[np.logical_and(_order>=delimiter[i],
+                                      _order<delimiter[i+1])]=i
             if 0 not in np.diff(_order):
                 back2backRep_morph = False    
             # # prevent same cat back2back repetition
@@ -49,6 +50,7 @@ for subj in tqdm(range(1,51)):
             #                           _order<np.arange(0,12+1,3)[i+1])]=i
             # if 0 not in np.diff(_cat):
             #     back2backRep_cat = False    
+
         #check if this particular sequence already exists in generated orders
         exist=0
         for _ in order:
@@ -87,12 +89,12 @@ for subj in tqdm(range(1,51)):
                 axis='bedChair'
                 button_left='Bed'
                 button_right='Chair'
-#                 if np.random.binomial(1, 0.5, 1)[0]==1: # randomly switch the button position
-#                     button_left='Bed'
-#                     button_right='Chair'
-#                 else:
-#                     button_left='Chair'
-#                     button_right='Bed'
+                # if np.random.binomial(1, 0.5, 1)[0]==1: # randomly switch the button position
+                #     button_left='Bed'
+                #     button_right='Chair'
+                # else:
+                #     button_left='Chair'
+                #     button_right='Bed'
             elif image in ['C','D']:
                 morphDict={'C':1, 'D':100}
                 axis='tableBench'
@@ -110,6 +112,7 @@ for subj in tqdm(range(1,51)):
                                                        viewPoint)
             self.viewPointOrder[alpha.index(image)].pop(0)
             return path,morphDict[image],axis,button_left,button_right,viewPoint
+            
     orders_df = pd.DataFrame(columns=['time','imnum','dur','weight','imcode','path',
                                       'corrAns','axis','button_left','button_right','viewPoint'])
     imagePath=imageProperty()
