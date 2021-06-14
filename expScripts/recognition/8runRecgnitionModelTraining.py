@@ -62,6 +62,7 @@ def wait(waitfor, delay=1):
         print('waiting for {}'.format(waitfor))
 
 recordingTxt=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/recording.txt" # None
+forceGreedy=''
 
 if args.preprocessOnly:
     recognition_preprocess(cfg,args.scan_asTemplate)
@@ -97,12 +98,13 @@ else:
     
     if args.forceGreedy:
         print("force running greedyMask")
-        cfg.chosenMask=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/chosenMask.npy"
-        recordingTxt=greedyMask(cfg)
-
+        # cfg.chosenMask=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/chosenMask.npy"
+        forceGreedy="forceGreedy"
+        recordingTxt=greedyMask(cfg,forceGreedy=forceGreedy)
+    
     # train the classifiers
     # accs = minimalClass(cfg)
-    accs = minimalClass(cfg,testRun=args.testRun,recordingTxt=recordingTxt)
+    accs = minimalClass(cfg,testRun=args.testRun,recordingTxt=recordingTxt, forceGreedy=forceGreedy)
 
     print("\n\n")
     print(f"minimalClass accs={accs}")

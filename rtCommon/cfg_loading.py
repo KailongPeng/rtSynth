@@ -70,11 +70,15 @@ def cfg_loading(toml='',trying=""):
     cfg.feedback_dir      = f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/feedback/"
     cfg.usingModel_dir    = f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session-1}/recognition/clf/"
     cfg.trainingModel_dir = f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/clf/"
+
+    cfg.chosenMask = f"{cfg.subjects_dir}{cfg.subjectName}/ses1/recognition/chosenMask.npy"
+    cfg.chosenMask_training=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/chosenMask.npy"
+    cfg.chosenMask_using=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session-1}/recognition/chosenMask.npy"
+
     cfg.templateFunctionalVolume = f"{cfg.subjects_dir}{cfg.subjectName}/ses1/recognition/templateFunctionalVolume.nii" 
     cfg.templateFunctionalVolume_converted = f"{cfg.recognition_dir}/templateFunctionalVolume_converted.nii" # templateFunctionalVolume_converted is the current day run1 middle volume converted in day1 template space
     cfg.dicomNamePattern  = "001_{SCAN:06d}_{TR:06d}.dcm" # "001_0000{}_000{}.dcm"
     cfg.mask_dir          = f"{cfg.recognition_dir}mask/"
-    cfg.chosenMask = f"{cfg.subjects_dir}{cfg.subjectName}/ses1/recognition/chosenMask.npy"
     cfg.GMINFUNC=f"{cfg.subjects_dir}{cfg.subjectName}/ses1/anat/gm_func.nii.gz"
     cfg.adaptiveThreshold=f"{cfg.subjects_dir}{cfg.subjectName}/adaptiveThreshold.csv"
     # prepare folder structure
