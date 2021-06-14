@@ -69,65 +69,6 @@ def wait(waitfor, delay=1):
         time.sleep(delay)
         print('waiting for {}'.format(waitfor))
 
-# recordingTxt=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/recording.txt" # None
-forceGreedy="forceGreedy"
-recordingTxt=''
-for currRun in range(1,9):
-    recordingTxt=greedyMask(cfg, LeaveOutRun=currRun,recordingTxt=recordingTxt)
-    accs = minimalClass(cfg,LeaveOutRun=currRun,recordingTxt=recordingTxt)
-    print("\n\n")
-    print(f"minimalClass accs={accs}")
-    # save_obj(accs,f"{cfg.recognition_dir}minimalClass_accs")
-    save_obj(accs,f"{cfg.recognition_dir}/Leave_{currRun}_out_Greedy_and_trainTest")
-
-
-# if args.preprocessOnly:
-#     recognition_preprocess(cfg,args.scan_asTemplate)
-# else:
-#     '''
-#     convert all dicom files into nii files in the temp dir. 
-#     find the middle volume of the run1 as the template volume
-#     align every other functional volume with templateFunctionalVolume (3dvolreg)
-#     '''
-#     if not args.skipPre:
-#         recognition_preprocess(cfg,args.scan_asTemplate) #somehow this cannot be run in jupyter
-
-
-#     '''
-#     run the mask selection
-#         make ROIs
-#             make-schaefer-rois.sh
-#         starting from 31 megaROIs use greedyMask to find best ROI for the current subject
-#     '''
-#     # make ROIs
-#     if cfg.session==1:
-#         if not os.path.exists(f"{cfg.recognition_dir}mask/GMschaefer_300.nii.gz"):
-#             print(f"running sbatch {cfg.recognition_expScripts_dir}make-schaefer-rois.sh {cfg.subjectName} {cfg.recognition_dir}")
-#             subprocess.Popen(f"sbatch {cfg.recognition_expScripts_dir}make-schaefer-rois.sh {cfg.subjectName} {cfg.recognition_dir}",shell=True)
-#             wait(f"{cfg.recognition_dir}mask/GMschaefer_300.nii.gz")
-
-#         # when this is the first session, you need to select the chosenMask
-#         # python expScripts/recognition/greedyMask.py
-#         if not args.skipGreedy:
-#             print("running greedyMask")
-#             recordingTxt=greedyMask(cfg)
-
-    
-#     if args.forceGreedy:
-#         print("force running greedyMask")
-#         # cfg.chosenMask=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/chosenMask.npy"
-#         forceGreedy="forceGreedy"
-#         recordingTxt=greedyMask(cfg,forceGreedy=forceGreedy)
-    
-#     # train the classifiers
-#     # accs = minimalClass(cfg)
-#     accs = minimalClass(cfg,testRun=args.testRun,recordingTxt=recordingTxt, forceGreedy=forceGreedy)
-
-#     print("\n\n")
-#     print(f"minimalClass accs={accs}")
-#     save_obj(accs,f"{cfg.recognition_dir}minimalClass_accs")
-
-
 def greedyMask(cfg,N=78,LeaveOutRun=1,recordingTxt = ""): # N used to be 31, 25 
     '''
     purpose:
@@ -251,7 +192,7 @@ def greedyMask(cfg,N=78,LeaveOutRun=1,recordingTxt = ""): # N used to be 31, 25
         behav_data.append(t)
     
 
-    tmp_folder=f"tmp__folder_{time.strftime(‘%Y-%m-%d-%H-%M-%S’, time.localtime(time.time()))}"
+    tmp_folder=f"tmp__folder_{time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))}"
     print(f"tmp_folder={tmp_folder}")
     mkdir(f"{cfg.projectDir}{tmp_folder}")
     save_obj([brain_data,behav_data],f"{cfg.projectDir}{tmp_folder}/{subject}_{dataSource}_{roiloc}_{N}") #{len(topN)}_{i}
@@ -659,3 +600,62 @@ def minimalClass(cfg,LeaveOutRun=1,recordingTxt=None):
 
     
     return accs
+    
+# recordingTxt=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/recording.txt" # None
+forceGreedy="forceGreedy"
+recordingTxt=''
+for currRun in range(1,9):
+    recordingTxt=greedyMask(cfg, LeaveOutRun=currRun,recordingTxt=recordingTxt)
+    accs = minimalClass(cfg,LeaveOutRun=currRun,recordingTxt=recordingTxt)
+    print("\n\n")
+    print(f"minimalClass accs={accs}")
+    # save_obj(accs,f"{cfg.recognition_dir}minimalClass_accs")
+    save_obj(accs,f"{cfg.recognition_dir}/Leave_{currRun}_out_Greedy_and_trainTest")
+
+
+# if args.preprocessOnly:
+#     recognition_preprocess(cfg,args.scan_asTemplate)
+# else:
+#     '''
+#     convert all dicom files into nii files in the temp dir. 
+#     find the middle volume of the run1 as the template volume
+#     align every other functional volume with templateFunctionalVolume (3dvolreg)
+#     '''
+#     if not args.skipPre:
+#         recognition_preprocess(cfg,args.scan_asTemplate) #somehow this cannot be run in jupyter
+
+
+#     '''
+#     run the mask selection
+#         make ROIs
+#             make-schaefer-rois.sh
+#         starting from 31 megaROIs use greedyMask to find best ROI for the current subject
+#     '''
+#     # make ROIs
+#     if cfg.session==1:
+#         if not os.path.exists(f"{cfg.recognition_dir}mask/GMschaefer_300.nii.gz"):
+#             print(f"running sbatch {cfg.recognition_expScripts_dir}make-schaefer-rois.sh {cfg.subjectName} {cfg.recognition_dir}")
+#             subprocess.Popen(f"sbatch {cfg.recognition_expScripts_dir}make-schaefer-rois.sh {cfg.subjectName} {cfg.recognition_dir}",shell=True)
+#             wait(f"{cfg.recognition_dir}mask/GMschaefer_300.nii.gz")
+
+#         # when this is the first session, you need to select the chosenMask
+#         # python expScripts/recognition/greedyMask.py
+#         if not args.skipGreedy:
+#             print("running greedyMask")
+#             recordingTxt=greedyMask(cfg)
+
+    
+#     if args.forceGreedy:
+#         print("force running greedyMask")
+#         # cfg.chosenMask=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/chosenMask.npy"
+#         forceGreedy="forceGreedy"
+#         recordingTxt=greedyMask(cfg,forceGreedy=forceGreedy)
+    
+#     # train the classifiers
+#     # accs = minimalClass(cfg)
+#     accs = minimalClass(cfg,testRun=args.testRun,recordingTxt=recordingTxt, forceGreedy=forceGreedy)
+
+#     print("\n\n")
+#     print(f"minimalClass accs={accs}")
+#     save_obj(accs,f"{cfg.recognition_dir}minimalClass_accs")
+
