@@ -63,6 +63,7 @@ cfg = cfg_loading(args.config)
 
 sys.path.append('/gpfs/milgram/project/turk-browne/projects/rtSynth_rt/expScripts/recognition/')
 # from recognition_dataAnalysisFunctions import recognition_preprocess,minimalClass,behaviorDataLoading,greedyMask,normalize #,classifierEvidence
+from recognition_dataAnalysisFunctions import behaviorDataLoading,normalize
 
 def wait(waitfor, delay=1):
     while not os.path.exists(waitfor):
@@ -600,7 +601,7 @@ def minimalClass(cfg,LeaveOutRun=1,recordingTxt=None):
 
     
     return accs
-    
+
 # recordingTxt=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/recording.txt" # None
 forceGreedy="forceGreedy"
 recordingTxt=''
