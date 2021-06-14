@@ -257,7 +257,7 @@ def normalize(X):
     _X[np.isnan(_X)]=0
     return _X
 
-def minimalClass(cfg,testRun=None,recordingTxt=None):
+def minimalClass(cfg,testRun=None,recordingTxt=None,forceGreedy=""):
     '''
     purpose: 
         train offline models
@@ -318,7 +318,12 @@ def minimalClass(cfg,testRun=None,recordingTxt=None):
     new_run_index=1 #使用新的run 的index，以便于后面的testRun selection的时候不会重复。正常的话 new_run_index 应该是1，2，3，4，5，6，7，8
     for ii,run in enumerate(actualRuns): # load behavior and brain data for current session
         t = np.load(f"{cfg.recognition_dir}brain_run{run}.npy")
-        mask = np.load(f"{cfg.chosenMask}")
+        if forceGreedy=="forceGreedy":
+            mask = np.load(f"{cfg.chosenMask_using}")
+            print(f"loading {cfg.chosenMask_using}")
+        else:
+            mask = np.load(f"{cfg.chosenMask}")
+            print(f"loading {cfg.chosenMask}")
         t = t[:,mask==1]
         t = normalize(t)
         brain_data=t if ii==0 else np.concatenate((brain_data,t), axis=0)
@@ -331,7 +336,12 @@ def minimalClass(cfg,testRun=None,recordingTxt=None):
 
     for ii,run in enumerate(actualRuns_preDay): # load behavior and brain data for previous session
         t = np.load(f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session-1}/recognition/brain_run{run}.npy")
-        mask = np.load(f"{cfg.chosenMask}")
+        if forceGreedy=="forceGreedy":
+            mask = np.load(f"{cfg.chosenMask_using}")
+            print(f"loading {cfg.chosenMask_using}")
+        else:
+            mask = np.load(f"{cfg.chosenMask}")
+            print(f"loading {cfg.chosenMask}")
         t = t[:,mask==1]
         t = normalize(t)
         brain_data = np.concatenate((brain_data,t), axis=0)
@@ -344,7 +354,12 @@ def minimalClass(cfg,testRun=None,recordingTxt=None):
 
     for ii,run in enumerate(actualRuns_prepreDay): # load behavior and brain data for previous session
         t = np.load(f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session-2}/recognition/brain_run{run}.npy")
-        mask = np.load(f"{cfg.chosenMask}")
+        if forceGreedy=="forceGreedy":
+            mask = np.load(f"{cfg.chosenMask_using}")
+            print(f"loading {cfg.chosenMask_using}")
+        else:
+            mask = np.load(f"{cfg.chosenMask}")
+            print(f"loading {cfg.chosenMask}")
         t = t[:,mask==1]
         t = normalize(t)
         brain_data = np.concatenate((brain_data,t), axis=0)
@@ -794,7 +809,7 @@ def fetchXnat(sess_ID):
 
     # furthur work need to be done with this resulting nifti folder
 
-def greedyMask(cfg,N=78): # N used to be 31, 25
+def greedyMask(cfg,N=78,forceGreedy=""): # N used to be 31, 25
     '''
     purpose:
         starting from N ROIs, get the best performed ROI combination in a greedy way
@@ -1111,7 +1126,11 @@ def greedyMask(cfg,N=78): # N used to be 31, 25
     append_file(recordingTxt,f"bestROIs={di['bestROIs']}")
 
     mask = getMask(di['bestROIs'],cfg)
-    np.save(cfg.chosenMask,mask)
+    if forceGreedy=="forceGreedy":
+        np.save(cfg.chosenMask_training,mask)
+    else:
+        np.save(cfg.chosenMask,mask)
+
     return recordingTxt
 
 def view_greedy_curve(tmp_folder="/gpfs/milgram/project/turk-browne/projects/rtSynth_rt/tmp__folder_2021-06-01-19-46-52",toml="sub003.ses1.toml"):

@@ -229,7 +229,12 @@ def doRuns(cfg, dataInterface, subjInterface, webInterface):
         "-----------------------------------------------------------------------------\n")
 
     tmp_dir=f"{cfg.tmp_folder}{time.time()}/" ; mkdir(tmp_dir)
-    mask=np.load(cfg.chosenMask)
+    forceGreedy = ""
+    if forceGreedy=="forceGreedy":
+        mask = np.load(f"{cfg.chosenMask_using}")
+    else:
+        mask = np.load(f"{cfg.chosenMask}")
+
 
 
     BC_clf=joblib.load(cfg.usingModel_dir +'benchchair_chairtable.joblib') # These 4 clf are the same: bedbench_benchtable.joblib bedtable_tablebench.joblib benchchair_benchtable.joblib chairtable_tablebench.joblib
