@@ -192,7 +192,7 @@ def rand_jitter(arr):
 
 # os.chdir(f"/Users/kailong/Desktop/rtEnv/rtSynth_rt/expScripts/catPer/data/")
 
-sub="000000sub003_1" #12345subTest11 12345subShmily
+sub="000000sub003_2" #12345subTest11 12345subShmily 000000sub003_1
 subject=f"catPer_{sub}.txt"
 os.chdir(f"/Users/kailong/Desktop/rtEnv/rtSynth_rt/subjects/{sub[6:].split('_')[0]}/ses{sub[6:].split('_')[1]}/catPer")
 
