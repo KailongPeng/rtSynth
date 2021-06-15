@@ -53,25 +53,8 @@ def wait(waitfor, delay=1):
         print('waiting for {}'.format(waitfor))
 
 def greedyMask(cfg,N=78,LeaveOutRun=1,recordingTxt = ""): # N used to be 31, 25 
-    '''
-    purpose:
-        starting from N ROIs, get the best performed ROI combination in a greedy way
-        this code is aggregate_greedy.py adapted to match rtcloud
-    steps:
-        load the N ROIs from result of neurosketch dataset
-        train the model using the NROIs and get the accuracy.
-
-        get the N combinations of N-1 ROIs
-        retrain the model and get the accuracy for these N combinations
-
-        get the N-1 combinations of N-2 ROIs
-        retrain the model and get the accuracy for these N-1 combinations
-
-        when everything is finished, find the best ROI and save as cfg.chosenMask
-        
-    '''
     import os
-    print(f"conda env={os.environ['CONDA_DEFAULT_ENV']}") 
+    print(f"conda env={os.environ['CONDA_DEFAULT_ENV']}")
     import numpy as np
     import nibabel as nib
     import sys
