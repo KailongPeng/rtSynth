@@ -66,7 +66,7 @@ def wait(waitfor, delay=1):
 recordingTxt=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/recording.txt" # None
 forceGreedy=''
 try:
-    tmp_folder=argParser.tmp_folder
+    tmp_folder=args.tmp_folder
 except:
     tmp_folder=''
 print(f"tmp_folder={tmp_folder}")
