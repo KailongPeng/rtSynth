@@ -48,6 +48,8 @@ argParser.add_argument('--forceGreedy', default=False, action='store_true', help
 argParser.add_argument('--testRun', '-t', default=None, type=int, help='testRun, can be [None,1,2,3,4,5,6,7,8]')
 argParser.add_argument('--scan_asTemplate', '-a', default=1, type=int, help="which scan's middle dicom as Template?")
 argParser.add_argument('--preprocessOnly', default=False, action='store_true', help='whether to only do preprocess and skip everything else')
+argParser.add_argument('--tmp_folder', default='' , type=str, help='tmp_folder')
+
 
 args = argParser.parse_args()
 from rtCommon.cfg_loading import mkdir,cfg_loading
@@ -63,6 +65,11 @@ def wait(waitfor, delay=1):
 
 recordingTxt=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/recording.txt" # None
 forceGreedy=''
+try:
+    tmp_folder=argParser.tmp_folder
+except:
+    tmp_folder=''
+print(f"tmp_folder={tmp_folder}")
 
 if args.preprocessOnly:
     recognition_preprocess(cfg,args.scan_asTemplate)
