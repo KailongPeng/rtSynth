@@ -63,7 +63,7 @@ cfg = cfg_loading(args.config)
 
 sys.path.append('/gpfs/milgram/project/turk-browne/projects/rtSynth_rt/expScripts/recognition/')
 # from recognition_dataAnalysisFunctions import recognition_preprocess,minimalClass,behaviorDataLoading,greedyMask,normalize #,classifierEvidence
-from recognition_dataAnalysisFunctions import behaviorDataLoading,normalize
+from recognition_dataAnalysisFunctions import behaviorDataLoading,normalize,append_file
 
 def wait(waitfor, delay=1):
     while not os.path.exists(waitfor):
