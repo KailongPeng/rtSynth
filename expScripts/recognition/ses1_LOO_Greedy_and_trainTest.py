@@ -166,6 +166,7 @@ def greedyMask(cfg,N=78,LeaveOutRun=1,recordingTxt = ""): # N used to be 31, 25
         while not os.path.exists(tmpFile+'_result.npy'):
             time.sleep(5)
             print(f"waiting for {tmpFile}_result.npy\n")
+        time.sleep(2)
         return np.load(tmpFile+'_result.npy',allow_pickle=True)
 
     def numOfRunningJobs():
