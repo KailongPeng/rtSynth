@@ -8,7 +8,7 @@
 #SBATCH -n 1
 module load FSL
 # module load miniconda
-source activate /gpfs/milgram/project/turk-browne/users/kp578/CONDA/rtcloud
+conda activate /gpfs/milgram/project/turk-browne/users/kp578/CONDA/rtcloud
 
 toml=$1 # sub002.ses5.toml
 LeaveOutRun=$2
