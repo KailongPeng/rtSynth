@@ -809,7 +809,7 @@ def fetchXnat(sess_ID):
 
     # furthur work need to be done with this resulting nifti folder
 
-def greedyMask(cfg,N=78,forceGreedy=""): # N used to be 31, 25
+def greedyMask(cfg,N=78,forceGreedy="",tmp_folder=''): # N used to be 31, 25
     '''
     purpose:
         starting from N ROIs, get the best performed ROI combination in a greedy way
@@ -944,16 +944,16 @@ def greedyMask(cfg,N=78,forceGreedy=""): # N used to be 31, 25
         t=list(t['Item'])
         behav_data.append(t)
 
-
-    tmp_folder = f"tmp__folder_{time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))}" #tmp__folder
-    mkdir(f"{cfg.projectDir}{tmp_folder}")
+    if tmp_folder=='':
+        tmp_folder = f"tmp__folder_{time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))}" #tmp__folder
+        mkdir(f"{cfg.projectDir}{tmp_folder}")
     save_obj([brain_data,behav_data],f"{cfg.projectDir}{tmp_folder}/{subject}_{dataSource}_{roiloc}_{N}") #{len(topN)}_{i}
 
     def wait(tmpFile):
         while not os.path.exists(tmpFile+'_result.npy'):
             time.sleep(5)
             print(f"waiting for {tmpFile}_result.npy\n")
-        return np.load(tmpFile+'_result.npy')
+        return np.load(tmpFile+'_result.npy',allow_pickle=True)
 
     def numOfRunningJobs():
         # subprocess.Popen(['squeue -u kp578 | wc -l > squeue.txt'],shell=True) # sl_result = Class(_runs, bcvar)
@@ -1128,8 +1128,10 @@ def greedyMask(cfg,N=78,forceGreedy=""): # N used to be 31, 25
     mask = getMask(di['bestROIs'],cfg)
     if forceGreedy=="forceGreedy":
         np.save(cfg.chosenMask_training,mask)
+        print(f"saving {cfg.chosenMask_training}")
     else:
         np.save(cfg.chosenMask,mask)
+        print(f"saving {cfg.chosenMask}")
 
     return recordingTxt
 
