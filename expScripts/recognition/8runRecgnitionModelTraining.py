@@ -107,7 +107,7 @@ else:
         print("force running greedyMask")
         # cfg.chosenMask=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/chosenMask.npy"
         forceGreedy="forceGreedy"
-        recordingTxt=greedyMask(cfg,forceGreedy=forceGreedy)
+        recordingTxt=greedyMask(cfg,forceGreedy=forceGreedy,tmp_folder=tmp_folder)
     
     # train the classifiers
     # accs = minimalClass(cfg)
