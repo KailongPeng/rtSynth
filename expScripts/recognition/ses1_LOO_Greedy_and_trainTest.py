@@ -38,7 +38,7 @@ argParser.add_argument('--forceGreedy', default=False, action='store_true', help
 argParser.add_argument('--testRun', '-t', default=None, type=int, help='testRun, can be [None,1,2,3,4,5,6,7,8]')
 argParser.add_argument('--scan_asTemplate', '-a', default=1, type=int, help="which scan's middle dicom as Template?")
 argParser.add_argument('--preprocessOnly', default=False, action='store_true', help='whether to only do preprocess and skip everything else')
-
+argParser.add_argument('--LeaveOutRun', '-l', default=None, type=int, help='testRun, can be [None,1,2,3,4,5,6,7,8]')
 args = argParser.parse_args()
 from rtCommon.cfg_loading import mkdir,cfg_loading
 # config="sub001.ses2.toml"
@@ -166,7 +166,7 @@ def greedyMask(cfg,N=78,LeaveOutRun=1,recordingTxt = ""): # N used to be 31, 25
         while not os.path.exists(tmpFile+'_result.npy'):
             time.sleep(5)
             print(f"waiting for {tmpFile}_result.npy\n")
-        return np.load(tmpFile+'_result.npy')
+        return np.load(tmpFile+'_result.npy',allow_pickle=True)
 
     def numOfRunningJobs():
         # subprocess.Popen(['squeue -u kp578 | wc -l > squeue.txt'],shell=True) # sl_result = Class(_runs, bcvar)
@@ -533,11 +533,11 @@ def minimalClass(cfg,LeaveOutRun=1,recordingTxt=None):
 # recordingTxt=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/recording.txt" # None
 forceGreedy="forceGreedy"
 recordingTxt=''
-for currRun in range(1,9):
-    recordingTxt=greedyMask(cfg, LeaveOutRun=currRun,recordingTxt=recordingTxt)
-    accs = minimalClass(cfg,LeaveOutRun=currRun,recordingTxt=recordingTxt)
-    print("\n\n")
-    print(f"minimalClass accs={accs}")
-    # save_obj(accs,f"{cfg.recognition_dir}minimalClass_accs")
-    save_obj(accs,f"{cfg.recognition_dir}/Leave_{currRun}_out_Greedy_and_trainTest")
+# for currRun in range(1,9):
+recordingTxt=greedyMask(cfg, LeaveOutRun=int(args.LeaveOutRun),recordingTxt=recordingTxt)
+accs = minimalClass(cfg,LeaveOutRun=currRun,recordingTxt=recordingTxt)
+print("\n\n")
+print(f"minimalClass accs={accs}")
+# save_obj(accs,f"{cfg.recognition_dir}minimalClass_accs")
+save_obj(accs,f"{cfg.recognition_dir}/Leave_{currRun}_out_Greedy_and_trainTest")
 

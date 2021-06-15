@@ -11,6 +11,6 @@ module load FSL
 source activate /gpfs/milgram/project/turk-browne/users/kp578/CONDA/rtcloud
 
 toml=$1 # sub002.ses5.toml
-
-python -u /gpfs/milgram/project/turk-browne/projects/rtSynth_rt/expScripts/recognition/ses1_LOO_Greedy_and_trainTest.py -c $toml
+LeaveOutRun=$2
+python -u /gpfs/milgram/project/turk-browne/projects/rtSynth_rt/expScripts/recognition/ses1_LOO_Greedy_and_trainTest.py -c $toml --LeaveOutRun $LeaveOutRun
 
