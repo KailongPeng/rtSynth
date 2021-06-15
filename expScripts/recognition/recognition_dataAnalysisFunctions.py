@@ -947,6 +947,7 @@ def greedyMask(cfg,N=78,forceGreedy="",tmp_folder=''): # N used to be 31, 25
     if tmp_folder=='':
         tmp_folder = f"tmp__folder_{time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))}" #tmp__folder
         mkdir(f"{cfg.projectDir}{tmp_folder}")
+    recordingTxt=f"{tmp_folder}/recording.txt"
     save_obj([brain_data,behav_data],f"{cfg.projectDir}{tmp_folder}/{subject}_{dataSource}_{roiloc}_{N}") #{len(topN)}_{i}
 
     def wait(tmpFile):
@@ -1009,7 +1010,9 @@ def greedyMask(cfg,N=78,forceGreedy="",tmp_folder=''): # N used to be 31, 25
 
     if os.path.exists(f"{cfg.projectDir}{tmp_folder}/{subject}_{N}_{roiloc}_{dataSource}_{1}.pkl"):
         print(f"{cfg.projectDir}{tmp_folder}/{subject}_{N}_{roiloc}_{dataSource}_1.pkl exists")
-        raise Exception('runned or running')
+        # raise Exception('runned or running')
+        return recordingTxt
+        
 
     # N-1
     def next(topN):
@@ -1121,7 +1124,7 @@ def greedyMask(cfg,N=78,forceGreedy="",tmp_folder=''): # N used to be 31, 25
     di = load_obj(f"./{tmp_folder}/{subject}_{N}_{roiloc}_{dataSource}_{bestID+1}")
     print(f"bestID={bestID}; best Acc = {di['bestAcc']}")
     print(f"bestROIs={di['bestROIs']}")
-    recordingTxt=f"{tmp_folder}/recording.txt"
+    
     append_file(recordingTxt,f"bestID={bestID}; best Acc = {di['bestAcc']}")
     append_file(recordingTxt,f"bestROIs={di['bestROIs']}")
 
