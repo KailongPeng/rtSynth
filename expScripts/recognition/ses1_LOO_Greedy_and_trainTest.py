@@ -1,21 +1,3 @@
-# """
-# 我决定搞成两部分，一部分是使用新的代码专心的对ses1搞特殊。（太特殊了，很难融入其他部分的code）
-#     如果要这么设计的话，那么就需要首先对ses1 搞特殊，那就是对ses1搞leave-one-run-out 的greedyMask（特殊），也就是说在跑ses1的时候，需要对ses1的数据rotate，然后使用7个run来进行训练（特殊），然后使用最后一个run来test（特殊）
-#     具体的来说，对于新的函数ses1_LOO_Greedy_and_trainTest.py
-#         其中包含了修改后的 8runRecgnitionModelTraining.py 的内容（包括整体的结构被修改为LOO，然后每一个loop中greedy的对象被修改为那一个loop对应的7个run（在greedy函数中修改，记住保存每一个greedy的chosenMask 为ses1/recognition/chosenMask_leave_[1,2,3,4,5,6,7,8]_out.npy），然后MinimalClass被修改为只使用指定的7个run做训练，剩下的一个run做测试。记住要保存测试的acc到ses1/recognition/LOO_Greedy_and_trainTest.npy）
-# """
-
-# #  this script is meant to deal with the data of 8 recognition runs and generate models saved in corresponding folder
-# '''
-# input:
-#     cfg.session=ses1
-#     cfg.modelFolder=f"{cfg.subjects_dir}/{cfg.subjectName}/{cfg.session}_recognition/clf/"
-#     cfg.dataFolder=f"{cfg.subjects_dir}/{cfg.subjectName}/{cfg.session}_recognition/"
-# output:
-#     models in cfg.modelFolder
-# '''
-
-
 import os
 import sys
 sys.path.append('/gpfs/milgram/project/turk-browne/projects/rtSynth_rt/')
