@@ -39,6 +39,9 @@ argParser.add_argument('--testRun', '-t', default=None, type=int, help='testRun,
 argParser.add_argument('--scan_asTemplate', '-a', default=1, type=int, help="which scan's middle dicom as Template?")
 argParser.add_argument('--preprocessOnly', default=False, action='store_true', help='whether to only do preprocess and skip everything else')
 argParser.add_argument('--LeaveOutRun', '-l', default=None, type=int, help='testRun, can be [None,1,2,3,4,5,6,7,8]')
+
+argParser.add_argument('--tmp_folder', '-t', default='_', type=str, help='tmp_folder')
+
 args = argParser.parse_args()
 from rtCommon.cfg_loading import mkdir,cfg_loading
 # config="sub001.ses2.toml"
@@ -52,7 +55,7 @@ def wait(waitfor, delay=1):
         time.sleep(delay)
         print('waiting for {}'.format(waitfor))
 
-def greedyMask(cfg,N=78,LeaveOutRun=1,recordingTxt = ""): # N used to be 31, 25 
+def greedyMask(cfg,N=78,LeaveOutRun=1,recordingTxt = "", tmp_folder=''): # N used to be 31, 25 
     import os
     import numpy as np
     import nibabel as nib
@@ -156,8 +159,8 @@ def greedyMask(cfg,N=78,LeaveOutRun=1,recordingTxt = ""): # N used to be 31, 25
         t=list(t['Item'])
         behav_data.append(t)
     
-
-    tmp_folder=f"tmp__folder_{time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))}"
+    if tmp_folder='' or tmp_folder='_':
+        tmp_folder=f"tmp__folder_{time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))}"
     print(f"tmp_folder={tmp_folder}")
     mkdir(f"{cfg.projectDir}{tmp_folder}")
     save_obj([brain_data,behav_data],f"{cfg.projectDir}{tmp_folder}/{subject}_{dataSource}_{roiloc}_{N}") #{len(topN)}_{i}
@@ -534,11 +537,19 @@ def minimalClass(cfg,LeaveOutRun=1,recordingTxt=None):
 # recordingTxt=f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session}/recognition/recording.txt" # None
 forceGreedy="forceGreedy"
 recordingTxt=''
-# for currRun in range(1,9):
-recordingTxt=greedyMask(cfg, LeaveOutRun=int(args.LeaveOutRun),recordingTxt=recordingTxt)
-accs = minimalClass(cfg,LeaveOutRun=currRun,recordingTxt=recordingTxt)
+if args.tmp_folder=="_":
+    tmp_folder=''
+else:
+    tmp_folder=args.tmp_folder
+
+# for LeaveOutRun in range(1,9):
+LeaveOutRun=args.LeaveOutRun
+print(f"LeaveOutRun={LeaveOutRun}")
+
+recordingTxt=greedyMask(cfg, LeaveOutRun=int(LeaveOutRun),recordingTxt=recordingTxt,tmp_folder=tmp_folder)
+accs = minimalClass(cfg,LeaveOutRun=LeaveOutRun,recordingTxt=recordingTxt)
 print("\n\n")
 print(f"minimalClass accs={accs}")
 # save_obj(accs,f"{cfg.recognition_dir}minimalClass_accs")
-save_obj(accs,f"{cfg.recognition_dir}/Leave_{currRun}_out_Greedy_and_trainTest")
+save_obj(accs,f"{cfg.recognition_dir}/Leave_{LeaveOutRun}_out_Greedy_and_trainTest")
 
