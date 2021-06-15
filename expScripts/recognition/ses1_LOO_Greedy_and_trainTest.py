@@ -40,7 +40,7 @@ argParser.add_argument('--scan_asTemplate', '-a', default=1, type=int, help="whi
 argParser.add_argument('--preprocessOnly', default=False, action='store_true', help='whether to only do preprocess and skip everything else')
 argParser.add_argument('--LeaveOutRun', '-l', default=None, type=int, help='testRun, can be [None,1,2,3,4,5,6,7,8]')
 
-argParser.add_argument('--tmp_folder', '-t', default='_', type=str, help='tmp_folder')
+argParser.add_argument('--tmp_folder', default='_', type=str, help='tmp_folder')
 
 args = argParser.parse_args()
 from rtCommon.cfg_loading import mkdir,cfg_loading
