@@ -268,9 +268,10 @@ def greedyMask(cfg,N=78,LeaveOutRun=1,recordingTxt = "", tmp_folder=''): # N use
             else:
                 command=f'sbatch --array=1-{i+1} {cfg.recognition_expScripts_dir}class_LOO.sh ./{tmp_folder}/{subject}_{N}_{roiloc}_{dataSource}_{len(topN)}_'
                 print(f"skip {command}")
-
-            os.remove(f"{cfg.projectDir}{tmp_folder}/holdon.npy")
-
+            try:
+                os.remove(f"{cfg.projectDir}{tmp_folder}/holdon.npy")
+            except:
+                pass
             # wait for everything to be finished and make a summary to find the best performed megaROI
             sl_results=[]
             for tmpFile in tmpFiles:
