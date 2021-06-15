@@ -69,6 +69,9 @@ try:
     tmp_folder=args.tmp_folder
 except:
     tmp_folder=''
+if tmp_folder == "_": # this is used when I don't want to give any tmp_folder
+    tmp_folder = ''
+    
 print(f"tmp_folder={tmp_folder}")
 
 if args.preprocessOnly:
