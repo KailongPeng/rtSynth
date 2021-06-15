@@ -54,7 +54,6 @@ def wait(waitfor, delay=1):
 
 def greedyMask(cfg,N=78,LeaveOutRun=1,recordingTxt = ""): # N used to be 31, 25 
     import os
-    print(f"conda env={os.environ['CONDA_DEFAULT_ENV']}")
     import numpy as np
     import nibabel as nib
     import sys
