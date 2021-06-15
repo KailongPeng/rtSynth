@@ -93,8 +93,8 @@ def greedyMask(cfg,N=78,LeaveOutRun=1,recordingTxt = ""): # N used to be 31, 25
 
     print("Running subject {}, with {} as a data source, {}, starting with {} ROIs".format(subject, dataSource, roiloc, N))
 
-    funcdata = cfg.recognition_dir + "brain_run{run}.npy"
-    metadata = cfg.recognition_dir + "behav_run{run}.csv"
+    # funcdata = cfg.recognition_dir + "brain_run{run}.npy"
+    # metadata = cfg.recognition_dir + "behav_run{run}.csv"
 
     topN = load_obj(f"{cfg.recognition_expScripts_dir}top{N}ROIs")
     print(f"len(topN)={len(topN)}")
