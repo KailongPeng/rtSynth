@@ -1,3 +1,4 @@
+# coding=UTF-8
 import os
 import sys
 sys.path.append('/gpfs/milgram/project/turk-browne/projects/rtSynth_rt/')
