@@ -44,7 +44,6 @@ from rtCommon.cfg_loading import mkdir,cfg_loading
 cfg = cfg_loading(args.config)
 
 sys.path.append('/gpfs/milgram/project/turk-browne/projects/rtSynth_rt/expScripts/recognition/')
-# from recognition_dataAnalysisFunctions import recognition_preprocess,minimalClass,behaviorDataLoading,greedyMask,normalize #,classifierEvidence
 from recognition_dataAnalysisFunctions import behaviorDataLoading,normalize,append_file
 
 def wait(waitfor, delay=1):
@@ -404,42 +403,6 @@ def minimalClass(cfg,LeaveOutRun=1,recordingTxt=None):
         new_run_indexs.append(new_run_index)
         new_run_index+=1
         behav_data=t if ii==0 else pd.concat([behav_data,t])
-
-    # for ii,run in enumerate(actualRuns_preDay): # load behavior and brain data for previous session
-    #     t = np.load(f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session-1}/recognition/brain_run{run}.npy")
-    #     if forceGreedy=="forceGreedy":
-    #         mask = np.load(f"{cfg.chosenMask_using}")
-    #         print(f"loading {cfg.chosenMask_using}")
-    #     else:
-    #         mask = np.load(f"{cfg.chosenMask}")
-    #         print(f"loading {cfg.chosenMask}")
-    #     t = t[:,mask==1]
-    #     t = normalize(t)
-    #     brain_data = np.concatenate((brain_data,t), axis=0)
-
-    #     t = pd.read_csv(f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session-1}/recognition/behav_run{run}.csv")
-    #     t['run_num'] = new_run_index
-    #     new_run_indexs.append(new_run_index)
-    #     new_run_index+=1
-    #     behav_data = pd.concat([behav_data,t])
-
-    # for ii,run in enumerate(actualRuns_prepreDay): # load behavior and brain data for previous session
-    #     t = np.load(f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session-2}/recognition/brain_run{run}.npy")
-    #     if forceGreedy=="forceGreedy":
-    #         mask = np.load(f"{cfg.chosenMask_using}")
-    #         print(f"loading {cfg.chosenMask_using}")
-    #     else:
-    #         mask = np.load(f"{cfg.chosenMask}")
-    #         print(f"loading {cfg.chosenMask}")
-    #     t = t[:,mask==1]
-    #     t = normalize(t)
-    #     brain_data = np.concatenate((brain_data,t), axis=0)
-
-    #     t = pd.read_csv(f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session-2}/recognition/behav_run{run}.csv")
-    #     t['run_num'] = new_run_index
-    #     new_run_indexs.append(new_run_index)
-    #     new_run_index+=1
-    #     behav_data = pd.concat([behav_data,t])
 
     FEAT=brain_data.reshape(brain_data.shape[0],-1)
 
