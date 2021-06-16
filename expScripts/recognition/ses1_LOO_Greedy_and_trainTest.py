@@ -379,18 +379,18 @@ def minimalClass(cfg,LeaveOutRun=1,recordingTxt=None):
     '''
     runRecording = pd.read_csv(f"{cfg.recognition_dir}../runRecording.csv")
     actualRuns = list(runRecording['run'].iloc[list(np.where(1==1*(runRecording['type']=='recognition'))[0])]) # can be [1,2,3,4,5,6,7,8] or [1,2,4,5]
-    if len(actualRuns) < 8:
-        runRecording_preDay = pd.read_csv(f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session-1}/recognition/../runRecording.csv")
-        actualRuns_preDay = list(runRecording_preDay['run'].iloc[list(np.where(1==1*(runRecording_preDay['type']=='recognition'))[0])])[-(8-len(actualRuns)):] # might be [5,6,7,8]
-    else: 
-        actualRuns_preDay = []
+    # if len(actualRuns) < 8:
+    #     runRecording_preDay = pd.read_csv(f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session-1}/recognition/../runRecording.csv")
+    #     actualRuns_preDay = list(runRecording_preDay['run'].iloc[list(np.where(1==1*(runRecording_preDay['type']=='recognition'))[0])])[-(8-len(actualRuns)):] # might be [5,6,7,8]
+    # else: 
+    #     actualRuns_preDay = []
 
-    # assert len(actualRuns_preDay)+len(actualRuns)==8 
-    if len(actualRuns_preDay)+len(actualRuns)<8:
-        runRecording_prepreDay = pd.read_csv(f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session-2}/recognition/../runRecording.csv")
-        actualRuns_prepreDay = list(runRecording_prepreDay['run'].iloc[list(np.where(1==1*(runRecording_prepreDay['type']=='recognition'))[0])])[-(8-len(actualRuns)-len(actualRuns_preDay)):] # might be [5,6,7,8]
-    else:
-        actualRuns_prepreDay = []
+    # # assert len(actualRuns_preDay)+len(actualRuns)==8 
+    # if len(actualRuns_preDay)+len(actualRuns)<8:
+    #     runRecording_prepreDay = pd.read_csv(f"{cfg.subjects_dir}{cfg.subjectName}/ses{cfg.session-2}/recognition/../runRecording.csv")
+    #     actualRuns_prepreDay = list(runRecording_prepreDay['run'].iloc[list(np.where(1==1*(runRecording_prepreDay['type']=='recognition'))[0])])[-(8-len(actualRuns)-len(actualRuns_preDay)):] # might be [5,6,7,8]
+    # else:
+    #     actualRuns_prepreDay = []
 
     objects = ['bed', 'bench', 'chair', 'table']
 
@@ -532,7 +532,6 @@ def minimalClass(cfg,LeaveOutRun=1,recordingTxt=None):
     if recordingTxt: #if tmp_folder is not None but some string, save the sentence.
         append_file(f"{recordingTxt}",f"accs={accs}")
         append_file(f"{recordingTxt}",f"LeaveOutRun = {LeaveOutRun} : average 2 way clf accuracy={np.mean(list(accs.values()))}")
-
     
     return accs
 
