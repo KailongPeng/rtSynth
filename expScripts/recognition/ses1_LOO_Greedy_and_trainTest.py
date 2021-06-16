@@ -109,7 +109,8 @@ def greedyMask(cfg,N=78,LeaveOutRun=1,recordingTxt = "", tmp_folder=''): # N use
             print('waiting for {}'.format(waitfor))
 
     imcodeDict={"A": "bed", "B": "Chair", "C": "table", "D": "bench"}
-
+    if recordingTxt=='':
+        recordingTxt=f"{tmp_folder}/recording.txt"
     def getMask(topN, cfg):
         for pn, parc in enumerate(topN):
             _mask = nib.load(f"{cfg.subjects_dir}{cfg.subjectName}/ses1/recognition/mask/GMschaefer_{parc}")
@@ -226,7 +227,8 @@ def greedyMask(cfg,N=78,LeaveOutRun=1,recordingTxt = "", tmp_folder=''): # N use
 
     if os.path.exists(f"{cfg.projectDir}{tmp_folder}/{subject}_{N}_{roiloc}_{dataSource}_{1}.pkl"):
         print(f"{cfg.projectDir}{tmp_folder}/{subject}_{N}_{roiloc}_{dataSource}_1.pkl exists")
-        raise Exception('runned or running')
+        return recordingTxt
+        # raise Exception('runned or running')
 
     # N-1
     def next(topN):
@@ -323,8 +325,7 @@ def greedyMask(cfg,N=78,LeaveOutRun=1,recordingTxt = "", tmp_folder=''): # N use
     di = load_obj(f"./{tmp_folder}/{subject}_{N}_{roiloc}_{dataSource}_{bestID+1}")
     print(f"bestID={bestID}; best Acc = {di['bestAcc']}")
     print(f"bestROIs={di['bestROIs']}")
-    if recordingTxt=='':
-        recordingTxt=f"{tmp_folder}/recording.txt"
+    
     append_file(recordingTxt,f"bestID={bestID}; best Acc = {di['bestAcc']}")
     append_file(recordingTxt,f"bestROIs={di['bestROIs']}")
 
